@@ -1,23 +1,24 @@
 {
-  "name": "nmr-control-client",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js run",
-    "config": "node app.js config"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.2",
-    "chalk": "^4.1.0",
-    "prompt": "^1.0.0",
-    "tabletojson": "^2.0.4",
-    "yargs": "^15.3.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.4"
-  }
+	"name": "nmr-control-client",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node app.js run",
+		"config": "node app.js config",
+		"dev": "nodemon --ignore './status_files/' --exec 'node app.js run --verbose'"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^0.19.2",
+		"chalk": "^4.1.0",
+		"prompt": "^1.0.0",
+		"tabletojson": "^2.0.4",
+		"yargs": "^15.3.1"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.4"
+	}
 }

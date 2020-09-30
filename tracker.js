@@ -21,7 +21,7 @@ const statusFileHandler = (verbose) => {
 		}
 		const statusConverted = tableToJSON.convert(statusHTML)
 		axios
-			.post('http://' + serverAddress + '/api/status', statusConverted)
+			.post('http://' + serverAddress + '/tracker/status', statusConverted)
 			.then((res) => {
 				if (verbose) {
 					console.log(
@@ -40,7 +40,7 @@ const statusFileHandler = (verbose) => {
 
 const tracker = (verbose) => {
 	axios
-		.get('http://' + serverAddress + '/api/ping')
+		.get('http://' + serverAddress + '/tracker/ping')
 		.then((res) => {
 			if ((res.data = 'OK')) {
 				console.log(chalk.greenBright('Server connection OK'))

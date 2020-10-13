@@ -5,32 +5,32 @@ const axios = require('axios')
 
 const { readConfig } = require('./config')
 
-const { statusPath, historyPath, serverAddress } = readConfig()
+const { instrumentId, statusPath, historyPath, serverAddress } = readConfig()
 
-const statusFileHandler = (verbose) => {
+const statusFileHandler = verbose => {
 	if (verbose) {
-		console.log(
-			chalk.blue('parsing status file'),
-			chalk.yellow(` [${new Date().toLocaleString()}]`)
-		)
+		console.log(chalk.blue('parsing status file'), chalk.yellow(` [${new Date().toLocaleString()}]`))
 	}
 	try {
 		let statusHTML = fs.readFileSync(statusPath).toString()
 		if (statusPath !== historyPath) {
 			statusHTML = statusHTML + fs.readFileSync(historyPath).toString()
 		}
-		const statusConverted = tableToJSON.convert(statusHTML)
+		const statusObj = {
+			instrumentId: instrumentId,
+			data: tableToJSON.convert(statusHTML)
+		}
+
+		fs.writeFileSync('status.json', JSON.stringify(statusObj))
+
 		axios
-			.post('http://' + serverAddress + '/tracker/status', statusConverted)
-			.then((res) => {
+			.post('http://' + serverAddress + '/tracker/status', statusObj)
+			.then(res => {
 				if (verbose) {
-					console.log(
-						chalk.greenBright(res.data),
-						chalk.yellow(` [${new Date().toLocaleString()}]`)
-					)
+					console.log(chalk.greenBright(res.data), chalk.yellow(` [${new Date().toLocaleString()}]`))
 				}
 			})
-			.catch((err) => {
+			.catch(err => {
 				console.log(chalk.red('[Server Error]', err))
 			})
 	} catch (err) {
@@ -38,16 +38,16 @@ const statusFileHandler = (verbose) => {
 	}
 }
 
-const tracker = (verbose) => {
+const tracker = verbose => {
 	axios
 		.get('http://' + serverAddress + '/tracker/ping')
-		.then((res) => {
+		.then(res => {
 			if ((res.data = 'OK')) {
 				console.log(chalk.greenBright('Server connection OK'))
 				statusFileHandler(verbose)
 			}
 		})
-		.catch((err) => {
+		.catch(err => {
 			console.log(chalk.red('[Server Error]', err))
 		})
 

@@ -21,13 +21,18 @@ const statusFileHandler = verbose => {
 			data: tableToJSON.convert(statusHTML)
 		}
 
-		fs.writeFileSync('status.json', JSON.stringify(statusObj))
+		// fs.writeFileSync('status.json', JSON.stringify(statusObj))
 
 		axios
-			.post('http://' + serverAddress + '/tracker/status', statusObj)
+			.patch('http://' + serverAddress + '/tracker/status', statusObj)
 			.then(res => {
 				if (verbose) {
-					console.log(chalk.greenBright(res.data), chalk.yellow(` [${new Date().toLocaleString()}]`))
+					if (res.status === 201) {
+						console.log(
+							chalk.greenBright('Status on server was updated'),
+							chalk.yellow(` [${new Date().toLocaleString()}]`)
+						)
+					}
 				}
 			})
 			.catch(err => {
@@ -40,15 +45,15 @@ const statusFileHandler = verbose => {
 
 const tracker = verbose => {
 	axios
-		.get('http://' + serverAddress + '/tracker/ping')
+		.get('http://' + serverAddress + '/tracker/ping/' + instrumentId)
 		.then(res => {
-			if ((res.data = 'OK')) {
-				console.log(chalk.greenBright('Server connection OK'))
+			if (res.status === 200) {
+				console.log(chalk.greenBright(`Instrument ${res.data.name} is connected to the server`))
 				statusFileHandler(verbose)
 			}
 		})
 		.catch(err => {
-			console.log(chalk.red('[Server Error]', err))
+			console.log(chalk.red('[Server Error]', err, 'Check whether instrument ID is valid'))
 		})
 
 	if (fs.existsSync(statusPath)) {

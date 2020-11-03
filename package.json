@@ -5,8 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node app.js run",
-		"config": "node app.js config",
+		"start": "node ./src/app.js run",
+		"config": "node ./src/app.js config",
+		"verbose": "node ./src/app.js run -v",
 		"dev": "nodemon --ignore './status_files/' --exec 'node app.js run --verbose'"
 	},
 	"author": "",

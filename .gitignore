@@ -1,3 +1,4 @@
 # dependencies
 /node_modules
 /status_files
+src/config.json

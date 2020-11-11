@@ -24,7 +24,7 @@ const statusFileHandler = verbose => {
 		// fs.writeFileSync('status.json', JSON.stringify(statusObj))
 
 		axios
-			.patch('http://' + serverAddress + '/tracker/status', statusObj)
+			.patch('http://' + serverAddress + '/api/tracker/status', statusObj)
 			.then(res => {
 				if (verbose) {
 					if (res.status === 201) {
@@ -45,7 +45,7 @@ const statusFileHandler = verbose => {
 
 const tracker = verbose => {
 	axios
-		.get('http://' + serverAddress + '/tracker/ping/' + instrumentId)
+		.get('http://' + serverAddress + '/api/tracker/ping/' + instrumentId)
 		.then(res => {
 			if (res.status === 200) {
 				console.log(chalk.greenBright(`Instrument ${res.data.name} is connected to the server`))

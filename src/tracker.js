@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const tableToJSON = require('tabletojson').Tabletojson
 const chalk = require('chalk')
 const axios = require('axios')
@@ -24,7 +25,7 @@ const statusFileHandler = verbose => {
 		// fs.writeFileSync('status.json', JSON.stringify(statusObj))
 
 		axios
-			.patch('http://' + serverAddress + '/api/tracker/status', statusObj)
+			.patch('http://' + serverAddress + '/tracker/status', statusObj)
 			.then(res => {
 				if (verbose) {
 					if (res.status === 201) {
@@ -43,9 +44,17 @@ const statusFileHandler = verbose => {
 	}
 }
 
-const tracker = verbose => {
+//helper function for dev purposes triggered  by parameter -s
+let statusFileCount = 1
+const saveStatusHandler = () => {
+	console.log(`Saving status file number ${statusFileCount}`)
+	fs.copyFileSync(statusPath, `./status-save/status-${statusFileCount}.html`)
+	statusFileCount++
+}
+
+const tracker = (verbose, save) => {
 	axios
-		.get('http://' + serverAddress + '/api/tracker/ping/' + instrumentId)
+		.get('http://' + serverAddress + '/tracker/ping/' + instrumentId)
 		.then(res => {
 			if (res.status === 200) {
 				console.log(chalk.greenBright(`Instrument ${res.data.name} is connected to the server`))
@@ -58,6 +67,9 @@ const tracker = verbose => {
 
 	if (fs.existsSync(statusPath)) {
 		fs.watchFile(statusPath, () => {
+			if (save) {
+				saveStatusHandler()
+			}
 			statusFileHandler(verbose)
 		})
 		console.log(chalk.greenBright(`Tracker watching ${statusPath}`))

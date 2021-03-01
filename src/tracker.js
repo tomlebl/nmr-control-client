@@ -68,6 +68,10 @@ const tracker = (verbose, save) => {
 	if (fs.existsSync(statusPath)) {
 		fs.watchFile(statusPath, () => {
 			if (save) {
+				if (!fs.existsSync('./status-save/')) {
+					fs.mkdirSync('./status-save/')
+				}
+
 				saveStatusHandler()
 			}
 			statusFileHandler(verbose)

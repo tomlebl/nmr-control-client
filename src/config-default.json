@@ -1,0 +1,6 @@
+{
+	"instrumentId": "5faa91d480f4922270d0d120",
+	"statusPath": "./status_files/status.html",
+	"historyPath": "./status_files/status.html",
+	"serverAddress": "localhost:8080"
+}

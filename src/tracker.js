@@ -5,6 +5,7 @@ const chalk = require('chalk')
 const axios = require('axios')
 
 const { readConfig } = require('./config')
+const { COPYFILE_EXCL } = fs.constants
 
 const { instrumentId, statusPath, historyPath, serverAddress } = readConfig()
 
@@ -47,12 +48,12 @@ let statusFileCount = 1
 let historyFileCount = 1
 const saveStatusHandler = () => {
 	console.log(`Saving status file number ${statusFileCount}`)
-	fs.copyFileSync(statusPath, `./status-save/status-${statusFileCount}.html`)
+	fs.copyFileSync(statusPath, `./status-save/status-${statusFileCount}.html`, COPYFILE_EXCL)
 	statusFileCount++
 }
 const saveHistoryHandler = () => {
-	console.log(`Saving history file number ${statusFileCount}`)
-	fs.copyFileSync(historyPath, `./status-save/history-${statusFileCount}.html`)
+	console.log(`Saving history file number ${historyFileCount}`)
+	fs.copyFileSync(historyPath, `./status-save/history-${historyFileCount}.html`, COPYFILE_EXCL)
 	historyFileCount++
 }
 
@@ -86,10 +87,12 @@ const tracker = (verbose, save) => {
 	}
 
 	if (statusPath !== historyPath && fs.existsSync(historyPath) && save) {
-		if (!fs.existsSync('./status-save/')) {
-			fs.mkdirSync('./status-save/')
-		}
-		saveHistoryHandler()
+		fs.watchFile(historyPath, () => {
+			if (!fs.existsSync('./status-save/')) {
+				fs.mkdirSync('./status-save/')
+			}
+			saveHistoryHandler()
+		})
 	}
 }
 

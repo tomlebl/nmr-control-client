@@ -4,7 +4,8 @@ const prompt = require('prompt')
 const chalk = require('chalk')
 
 const readConfig = () => {
-	const configJSON = fs.readFileSync('./src/config.json').toString()
+	const configPath = fs.existsSync('./src/config.json') ? './src/config.json' : './src/config-default.json'
+	const configJSON = fs.readFileSync(configPath).toString()
 	try {
 		return JSON.parse(configJSON)
 	} catch (err) {
@@ -15,6 +16,7 @@ const readConfig = () => {
 }
 
 const setConfig = list => {
+	console.log(list)
 	if (list) {
 		console.log(chalk.greenBright.inverse(' *** Current client config *** '))
 		console.log(readConfig())

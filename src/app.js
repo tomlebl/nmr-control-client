@@ -26,10 +26,15 @@ yargs.command({
 			alias: 'v',
 			describe: 'Client running with console logs',
 			type: 'boolean'
+		},
+		save: {
+			alias: 's',
+			describe: 'Client saving status files',
+			type: 'boolean'
 		}
 	},
 	handler(argv) {
-		tracker(argv.verbose)
+		tracker(argv.verbose, argv.save)
 	}
 })
 

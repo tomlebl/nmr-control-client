@@ -22,8 +22,6 @@ const statusFileHandler = verbose => {
 			data: tableToJSON.convert(statusHTML)
 		}
 
-		// fs.writeFileSync('status.json', JSON.stringify(statusObj))
-
 		axios
 			.patch('http://' + serverAddress + '/tracker/status', statusObj)
 			.then(res => {
@@ -44,12 +42,18 @@ const statusFileHandler = verbose => {
 	}
 }
 
-//helper function for dev purposes triggered  by parameter -s
+//helper functions for dev purposes triggered  by parameter -s
 let statusFileCount = 1
+let historyFileCount = 1
 const saveStatusHandler = () => {
 	console.log(`Saving status file number ${statusFileCount}`)
 	fs.copyFileSync(statusPath, `./status-save/status-${statusFileCount}.html`)
 	statusFileCount++
+}
+const saveHistoryHandler = () => {
+	console.log(`Saving history file number ${statusFileCount}`)
+	fs.copyFileSync(historyPath, `./status-save/history-${statusFileCount}.html`)
+	historyFileCount++
 }
 
 const tracker = (verbose, save) => {
@@ -71,7 +75,6 @@ const tracker = (verbose, save) => {
 				if (!fs.existsSync('./status-save/')) {
 					fs.mkdirSync('./status-save/')
 				}
-
 				saveStatusHandler()
 			}
 			statusFileHandler(verbose)
@@ -80,6 +83,13 @@ const tracker = (verbose, save) => {
 		console.log(chalk.cyan.italic('Press Ctrl+C any time to quit'))
 	} else {
 		console.log(chalk.red.inverse('   Status file path is invalid   '))
+	}
+
+	if (statusPath !== historyPath && fs.existsSync(historyPath) && save) {
+		if (!fs.existsSync('./status-save/')) {
+			fs.mkdirSync('./status-save/')
+		}
+		saveHistoryHandler()
 	}
 }
 

@@ -10,7 +10,7 @@
 		"list": "node ./src/app.js config -l",
 		"verbose": "node ./src/app.js run -v",
 		"save": "node ./src/app.js run -v -s",
-		"dev": "nodemon --ignore './status_files/' --exec 'node app.js run --verbose'"
+		"dev": "nodemon --ignore './status_files/' --exec 'node ./src/app.js run --verbose'"
 	},
 	"author": "",
 	"license": "ISC",
@@ -18,7 +18,9 @@
 		"axios": "^0.21.1",
 		"chalk": "^4.1.0",
 		"prompt": "^1.1.0",
+		"socket.io-client": "^4.0.0",
 		"tabletojson": "^2.0.4",
+		"uuid": "^8.3.2",
 		"yargs": "^15.4.1"
 	},
 	"devDependencies": {

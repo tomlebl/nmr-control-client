@@ -1,4 +1,6 @@
 # dependencies
 /node_modules
 /status_files
-src/config.json
+/status-save
+/submission
+src/config/config.json

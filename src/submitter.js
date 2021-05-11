@@ -4,32 +4,42 @@ const { v4: uuidv4 } = require('uuid')
 
 const { readConfig } = require('./config')
 
-const { instrumentId, submissionPath } = readConfig()
-const socket = io('http://localhost:8080', {
+const { instrumentId, submissionPath, serverAddress } = readConfig()
+const socket = io(serverAddress, {
 	query: { instrumentId }
 })
 
 const submitter = () => {
-	socket.on('create', data => {
-		let submissionFile = ''
-		JSON.parse(data).forEach(entry => {
-			submissionFile =
-				submissionFile +
-				`
-USER ${entry.group}
-			
-HOLDER ${entry.holder}					
-NAME ${entry.sampleId}
-SOLVENT ${entry.solvent}
-NO_SUBMIT
+	socket.on('book', data => {
+		const dataObj = JSON.parse(data)
+		let submissionFile = `
+		USER ${dataObj[0].group}`
 
-EXPNO ${entry.expNo}
-EXPERIMENT ${entry.parameterSet}
-TITLE ${entry.title}
-
-`
+		dataObj.forEach(entry => {
+			submissionFile += `
+		
+		HOLDER ${entry.holder}
+		NAME ${entry.sampleId}
+		SOLVENT ${entry.solvent}
+		TITLE ${entry.title}
+		NO_SUBMIT
+		`
+			entry.experiments.forEach(exp => {
+				const params = exp.params ? `PARAMETERS ${exp.params}` : ``
+				const night = entry.night ? 'NIGHT' : ``
+				submissionFile += `
+		EXPNO ${exp.expNo}
+		EXPERIMENT ${exp.paramSet}
+		TITLE ${exp.expTitle}
+		${params}
+		${night}		
+		`
+			})
 		})
-		fs.writeFileSync(submissionPath + uuidv4() + '-c', submissionFile + 'END')
+		submissionFile += `		
+		END`
+
+		fs.writeFileSync(submissionPath + uuidv4() + '-b', submissionFile)
 	})
 }
 

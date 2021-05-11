@@ -24,7 +24,7 @@ const statusFileHandler = verbose => {
 		}
 
 		axios
-			.patch('http://' + serverAddress + '/tracker/status', statusObj)
+			.patch(serverAddress + '/tracker/status', statusObj)
 			.then(res => {
 				if (verbose) {
 					if (res.status === 201) {
@@ -59,7 +59,7 @@ const saveHistoryHandler = () => {
 
 const tracker = (verbose, save) => {
 	axios
-		.get('http://' + serverAddress + '/tracker/ping/' + instrumentId)
+		.get(serverAddress + '/tracker/ping/' + instrumentId)
 		.then(res => {
 			if (res.status === 200) {
 				console.log(chalk.greenBright(`Instrument ${res.data.name} is connected to the server`))

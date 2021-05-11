@@ -1,6 +1,7 @@
 const yargs = require('yargs')
 
 const tracker = require('./tracker')
+const submitter = require('./submitter')
 const config = require('./config')
 
 yargs.command({
@@ -35,6 +36,7 @@ yargs.command({
 	},
 	handler(argv) {
 		tracker(argv.verbose, argv.save)
+		submitter()
 	}
 })
 

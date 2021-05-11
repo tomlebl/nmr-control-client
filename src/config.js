@@ -4,7 +4,9 @@ const prompt = require('prompt')
 const chalk = require('chalk')
 
 const readConfig = () => {
-	const configPath = fs.existsSync('./src/config.json') ? './src/config.json' : './src/config-default.json'
+	const configPath = fs.existsSync('./src/config/config.json')
+		? './src/config/config.json'
+		: './src/config/config-default.json'
 	const configJSON = fs.readFileSync(configPath).toString()
 	try {
 		return JSON.parse(configJSON)
@@ -16,7 +18,7 @@ const readConfig = () => {
 }
 
 const setConfig = list => {
-	console.log(list)
+	// console.log(list)
 	if (list) {
 		console.log(chalk.greenBright.inverse(' *** Current client config *** '))
 		console.log(readConfig())
@@ -53,6 +55,12 @@ const setConfig = list => {
 					description: chalk.greenBright('HTTP address of the server'),
 					type: 'string',
 					default: configObj.serverAddress
+				},
+				{
+					name: 'submissionPath',
+					description: chalk.greenBright('Relative to submission folder'),
+					type: 'string',
+					default: configObj.submissionPath
 				}
 			],
 			(err, result) => {
@@ -60,7 +68,7 @@ const setConfig = list => {
 					return onError(err)
 				}
 				const newConfigJSON = JSON.stringify(result)
-				fs.writeFile('./src/config.json', newConfigJSON, () => {
+				fs.writeFile('./src/config/config.json', newConfigJSON, () => {
 					console.log(chalk.blue('     !!!   SUCCESS   !!!   '))
 					console.log(chalk.greenBright.inverse(' *** Current client config *** '))
 					console.log(readConfig())

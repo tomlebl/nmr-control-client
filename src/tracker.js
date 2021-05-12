@@ -7,7 +7,13 @@ const axios = require('axios')
 const { readConfig } = require('./config')
 const { COPYFILE_EXCL } = fs.constants
 
-const { instrumentId, statusPath, historyPath, serverAddress } = readConfig()
+const configFile = readConfig()
+const { instrumentId, statusPath, historyPath } = configFile
+let { serverAddress } = configFile
+
+if (process.env.NODE_ENV !== 'dev') {
+	serverAddress += '/api'
+}
 
 const statusFileHandler = verbose => {
 	if (verbose) {

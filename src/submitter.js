@@ -41,6 +41,19 @@ END`
 
 		fs.writeFileSync(submissionPath + uuidv4() + '-b', submissionFile)
 	})
+
+	socket.on('delete', data => {
+		let submissionFile = ''
+		JSON.parse(data).forEach(holder => {
+			submissionFile += `
+HOLDER ${holder}
+DELETE
+			`
+		})
+		submissionFile += `
+END`
+		fs.writeFileSync(submissionPath + uuidv4() + '-d', submissionFile)
+	})
 }
 
 module.exports = submitter

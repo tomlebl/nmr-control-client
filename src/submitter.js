@@ -61,7 +61,7 @@ socket.on('submit', data => {
 	JSON.parse(data).forEach(holder => {
 		submissionFile += `
 HOLDER ${holder}
-SUBMIT
+SUBMIT_HOLDER ${holder}
 			`
 	})
 	submissionFile += `

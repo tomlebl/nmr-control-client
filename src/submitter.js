@@ -21,7 +21,7 @@ const submitter = () => {
 HOLDER ${entry.holder}
 NAME ${entry.sampleId}
 SOLVENT ${entry.solvent}
-TITLE ${entry.title}
+TITLE 
 NO_SUBMIT
 		`
 			entry.experiments.forEach(exp => {
@@ -30,7 +30,7 @@ NO_SUBMIT
 				submissionFile += `
 EXPNO ${exp.expNo}
 EXPERIMENT ${exp.paramSet}
-TITLE ${exp.expTitle}
+TITLE ${entry.title} @# ${exp.expTitle}
 		${params}
 		${night}		
 		`
@@ -55,5 +55,18 @@ END`
 		fs.writeFileSync(submissionPath + uuidv4() + '-d', submissionFile)
 	})
 }
+
+socket.on('submit', data => {
+	let submissionFile = ''
+	JSON.parse(data).forEach(holder => {
+		submissionFile += `
+HOLDER ${holder}
+SUBMIT
+			`
+	})
+	submissionFile += `
+END`
+	fs.writeFileSync(submissionPath + uuidv4() + '-s', submissionFile)
+})
 
 module.exports = submitter

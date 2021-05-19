@@ -25,8 +25,14 @@ TITLE
 NO_SUBMIT
 		`
 			entry.experiments.forEach(exp => {
-				const params = exp.params ? `PARAMETERS ${exp.params}` : ``
-				const night = entry.night ? 'NIGHT' : ``
+				const params = exp.params
+					? `
+PARAMETERS ${exp.params}`
+					: ``
+				const night = entry.night
+					? `
+NIGHT`
+					: ``
 				submissionFile += `
 EXPNO ${exp.expNo}
 EXPERIMENT ${exp.paramSet}

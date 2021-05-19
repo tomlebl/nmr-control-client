@@ -21,25 +21,18 @@ const submitter = () => {
 HOLDER ${entry.holder}
 NAME ${entry.sampleId}
 SOLVENT ${entry.solvent}
-TITLE 
 NO_SUBMIT
 `
 			entry.experiments.forEach(exp => {
-				const params = exp.params
-					? `
-PARAMETERS ${exp.params}`
-					: ``
-				const night = entry.night
-					? `
-NIGHT`
-					: ``
+				const params = exp.params ? `PARAMETERS ${exp.params}` : ``
+				const night = entry.night ? `NIGHT` : ``
 				submissionFile += `
+${night}
 EXPNO ${exp.expNo}
+${params}
 EXPERIMENT ${exp.paramSet}
 TITLE ${entry.title} @# ${exp.expTitle}
-		${params}
-		${night}		
-		`
+`
 			})
 		})
 		submissionFile += `		

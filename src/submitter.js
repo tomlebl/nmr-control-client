@@ -23,7 +23,7 @@ NAME ${entry.sampleId}
 SOLVENT ${entry.solvent}
 TITLE 
 NO_SUBMIT
-		`
+`
 			entry.experiments.forEach(exp => {
 				const params = exp.params
 					? `

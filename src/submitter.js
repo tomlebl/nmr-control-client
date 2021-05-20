@@ -31,7 +31,7 @@ ${night}
 EXPNO ${exp.expNo}
 ${params}
 EXPERIMENT ${exp.paramSet}
-TITLE ${entry.title} @# ${exp.expTitle}
+TITLE ${entry.title} || ${exp.expTitle}
 `
 			})
 		})

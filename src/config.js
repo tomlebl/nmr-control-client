@@ -72,7 +72,6 @@ const setConfig = list => {
 					console.log(chalk.blue('     !!!   SUCCESS   !!!   '))
 					console.log(chalk.greenBright.inverse(' *** Current client config *** '))
 					console.log(readConfig())
-					process.exit(1)
 				})
 			}
 		)

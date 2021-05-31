@@ -13,7 +13,6 @@ const socket = io(serverAddress, {
 //Connecting socket for test server
 let testSocket = undefined
 if (process.env.TEST_URL && process.env.TEST_INSTR_ID) {
-	console.log('Huuu')
 	testSocket = io(process.env.TEST_URL, {
 		query: { instrumentId: process.env.TEST_INSTR_ID }
 	})

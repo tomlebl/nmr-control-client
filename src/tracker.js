@@ -25,7 +25,7 @@ const statusFileHandler = verbose => {
 			statusHTML = statusHTML + fs.readFileSync(historyPath).toString()
 		}
 		const statusObj = {
-			instrumentId: instrumentId,
+			instrumentId,
 			data: tableToJSON.convert(statusHTML)
 		}
 
@@ -44,6 +44,22 @@ const statusFileHandler = verbose => {
 			.catch(err => {
 				console.log(chalk.red('[Server Error]', err))
 			})
+
+		if (process.env.TEST_URL && process.env.TEST_INSTR_ID) {
+			const testStatusObj = { ...statusObj, instrumentId: process.env.TEST_INSTR_ID }
+			axios
+				.patch(process.env.TEST_URL + '/api/tracker/status', testStatusObj)
+				.then(res => {
+					if (res.status === 201) {
+						console.log(chalk.greenBright('Test server was updated'))
+					}
+				})
+				.catch(err => {
+					console.log(chalk.red('[Test Server Error]', err))
+				})
+		} else {
+			throw new Error('Test server config malicious. Check ./src/config/dev-env file')
+		}
 	} catch (err) {
 		console.log(err)
 	}

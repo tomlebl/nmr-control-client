@@ -10,13 +10,15 @@
 		"list": "node ./src/app.js config -l",
 		"verbose": "node ./src/app.js run -v",
 		"save": "node ./src/app.js run -v -s",
-		"dev": "nodemon --ignore './status_files/' --exec 'NODE_ENV=dev node ./src/app.js run --verbose'"
+		"dev": "nodemon --ignore './status_files/' --exec 'NODE_ENV=dev node ./src/app.js run --verbose'",
+		"dev-test": "env-cmd -f ./src/config/dev-test.env node ./src/app.js run --verbose"
 	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
 		"axios": "^0.21.1",
 		"chalk": "^4.1.0",
+		"env-cmd": "^10.1.0",
 		"prompt": "^1.1.0",
 		"socket.io-client": "^4.0.0",
 		"tabletojson": "^2.0.4",

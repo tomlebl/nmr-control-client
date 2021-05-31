@@ -57,8 +57,6 @@ const statusFileHandler = verbose => {
 				.catch(err => {
 					console.log(chalk.red('[Test Server Error]', err))
 				})
-		} else {
-			throw new Error('Test server config malicious. Check ./src/config/dev-env file')
 		}
 	} catch (err) {
 		console.log(err)

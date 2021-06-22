@@ -1,14 +1,17 @@
 const fs = require('fs')
-const { io } = require('socket.io-client')
+const { io, Manager } = require('socket.io-client')
 const { v4: uuidv4 } = require('uuid')
 
 const { readConfig } = require('./config')
 
 const { instrumentId, submissionPath, serverAddress } = readConfig()
 
-const socket = io(serverAddress, {
+const manager = new Manager(serverAddress, {
+	reconnectionDelayMax: 100000,
 	query: { instrumentId }
 })
+
+const socket = manager.socket('/')
 
 //Connecting socket for test server
 let testSocket = undefined

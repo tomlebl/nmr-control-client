@@ -1,5 +1,4 @@
 const fs = require('fs')
-const path = require('path')
 const tableToJSON = require('tabletojson').Tabletojson
 const chalk = require('chalk')
 const axios = require('axios')
